@@ -20,8 +20,8 @@ Software requirements: see the `README.md` file under each deployment folder.
 ## Usage
 
 This project provide several ways to deploy PowerAPI, under the `deployment` folder. If you want to:
-- Deploy PowerAPI on a **single** server, see the `docker-compose` directory
-- Deploy PowerAPI on a **cluster**, see the `docker-stack` directory
+- Deploy PowerAPI on a **single** server, see the [docker-compose](/deployment/docker-compose) directory
+- Deploy PowerAPI on a **cluster**, see the [docker-stack](/deployment/docker-stack) directory
 
 Once the PowerAPI stack deployed, you can start programs you want to monitor in a Docker container.
 
