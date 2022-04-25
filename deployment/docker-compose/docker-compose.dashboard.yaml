@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  grafana:
+    depends_on:
+      - influxdb
+    image: grafana/grafana
+    ports:
+      - 3000:3000

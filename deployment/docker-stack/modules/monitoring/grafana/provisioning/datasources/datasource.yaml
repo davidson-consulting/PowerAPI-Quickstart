@@ -1,0 +1,17 @@
+# config file version
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDatasources:
+  - name: Influxdb
+    orgId: 1
+
+datasources:
+- name: Influxdb
+  type: influxdb
+  access: proxy
+  orgId: 1
+  url: http://influxdb:8086
+  database: powerapi_formula
+  user: admin
+  password: admin

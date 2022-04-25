@@ -1,0 +1,76 @@
+version: '3.4'
+
+services:
+  influxdb:
+    image: influxdb:1.8
+    ports:
+      - 8086:8086
+    networks:
+      - public
+    environment:
+      - INFLUXDB_DB=powerapi_formula
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.nodeType==monitoring"
+
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - public
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.nodeType==monitoring"
+
+  power-api-formula:
+    image: powerapi/smartwatts-formula
+    networks:
+      - public
+    cap_add:
+      - ALL
+    configs:
+      - source: config-formula
+        target: /config-formula.json
+    command:
+      - "--config-file"
+      - "/config-formula.json"
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.nodeType==monitoring"
+  
+  power-api-sensor:
+    image: powerapi/hwpc-sensor:latest
+    networks:
+      - public
+    depends_on:
+      - mongo
+    cap_add:
+      - ALL
+    configs:
+      - source: config-sensor
+        target: /config-sensor.json
+    volumes:
+      - /sys:/sys
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    command:
+      - "--config-file"
+      - "/config-sensor.json"
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.nodeType==worker"
+
+configs:
+  config-formula:
+    file: ./config-formula.json
+  config-sensor:
+    file: ./config-sensor.json
+
+networks:
+  public:
+    external:
+      name: public

@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+  influxdb:
+    container_name: influxdb
+    image: influxdb:1.8
+    ports:
+      - 8086:8086
+    environment:
+      - INFLUXDB_DB=powerapi_formula
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+
+  power-api-formula:
+    image: powerapi/smartwatts-formula
+    depends_on:
+      - mongo
+      - influxdb
+    cap_add:
+      - ALL
+    volumes:
+      - ./config-formula.json:/config-formula.json
+    command:
+      - "--config-file"
+      - "/config-formula.json"
+  
+  power-api-sensor:
+    image: powerapi/hwpc-sensor:latest
+    depends_on:
+      - mongo
+    cap_add:
+      - ALL
+    volumes:
+      - /sys:/sys
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./config-sensor.json:/config-sensor.json
+    command:
+      - "--config-file"
+      - "/config-sensor.json"

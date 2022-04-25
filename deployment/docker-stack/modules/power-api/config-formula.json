@@ -1,0 +1,29 @@
+{
+    "verbose": true,
+    "stream": true,
+    "input": {
+      "puller": {
+        "model": "HWPCReport",
+        "type": "mongodb",
+        "uri": "mongodb://mongo",
+        "db": "powerapi",
+        "collection": "sensor"
+      }
+    },
+    "output": {
+      "pusher_power": {
+        "tags": "socket",
+        "type": "influxdb",
+        "model": "PowerReport",
+        "uri": "influxdb",
+        "port": 8086,
+        "db": "powerapi_formula"
+      }
+    },
+    "cpu-frequency-base": 3600,
+    "cpu-frequency-min": 1200,
+    "cpu-frequency-max": 3900,
+    "cpu-error-threshold": 2.0,
+    "disable-dram-formula": true,
+    "sensor-report-sampling-interval": 1000
+  }  
