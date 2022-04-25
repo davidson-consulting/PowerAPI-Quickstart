@@ -1,0 +1,3 @@
+remote_theme: davidson-consulting/architect
+plugins:
+  - jekyll-remote-theme
